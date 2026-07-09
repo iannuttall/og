@@ -9,17 +9,18 @@
     "dev": "wrangler dev --local",
     "dev:remote": "wrangler dev --remote",
     "check": "pnpm lint && pnpm typecheck && pnpm test",
-    "deploy": "wrangler deploy",
+    "deploy": "node scripts/deploy-config.mjs && wrangler deploy --config wrangler.deploy.jsonc",
+    "deploy:dry-run": "node scripts/deploy-config.mjs && wrangler deploy --config wrangler.deploy.jsonc --dry-run",
     "examples": "node examples/generate.mjs",
     "format": "biome format --write .",
-    "lint": "biome check .",
+    "lint": "node scripts/check-file-lines.mjs && biome check .",
     "og": "node scripts/og.mjs",
     "security:audit": "pnpm audit --audit-level moderate",
     "security:check": "pnpm run security:audit && pnpm run security:secrets",
     "security:secrets": "node scripts/security-secrets.mjs",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "types": "wrangler types src/worker-configuration.d.ts"
+    "types": "wrangler types --strict-vars=false src/worker-configuration.d.ts"
   },
   "dependencies": {
     "@cloudflare/puppeteer": "^1.0.5",

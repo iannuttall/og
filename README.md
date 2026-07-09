@@ -45,6 +45,41 @@ pnpm examples
   <img src="examples/images/editorial.png" alt="Editorial OG image example" width="390">
 </p>
 
+Because the Worker screenshots a real browser page, the template can use plain
+HTML, CSS, canvas, WebGL, or a client-rendered island.
+
+Advanced demos:
+
+- Grain gradient, WebGL shader
+- Dither pattern, WebGL shader
+- Physics spheres, React Three Fiber + Rapier pattern
+
+<p>
+  <img src="examples/images/grain-gradient.png" alt="Grain gradient WebGL shader OG image example" width="390">
+  <img src="examples/images/dither-pattern.png" alt="Dither pattern WebGL shader OG image example" width="390">
+  <img src="examples/images/physics-spheres.png" alt="Physics spheres OG image example" width="390">
+</p>
+
+For heavier scenes, keep the 3D dependencies in your site, not this Worker. The
+Worker only needs the final `<template>`.
+
+```tsx
+<template data-og-template data-og-width="1200" data-og-height="630">
+  <Canvas camera={{ position: [0, 0, 30], fov: 17.5 }}>
+    <Physics gravity={[0, 0, 0]}>
+      {sphereConfigs.map((props, index) => (
+        <RigidBody key={index} linearDamping={4} angularDamping={1}>
+          <mesh>
+            <sphereGeometry />
+            <meshStandardMaterial color={props.color} />
+          </mesh>
+        </RigidBody>
+      ))}
+    </Physics>
+  </Canvas>
+</template>
+```
+
 ## Safety model
 
 Browser Rendering can cost money if public visitors can force fresh renders. This template is built around that problem.
@@ -136,6 +171,18 @@ Important config lives in `wrangler.jsonc`.
 
 Use `.dev.vars` for local-only overrides. Do not commit real tokens.
 
+For a Git-connected Cloudflare deploy, keep `wrangler.jsonc` generic and set
+public deploy variables in Cloudflare's build settings:
+
+```sh
+OG_ALLOWED_HOSTS=example.com,www.example.com
+OG_ALLOW_SUBDOMAINS=false
+```
+
+`pnpm deploy` generates an ignored `wrangler.deploy.jsonc` from those values
+and deploys with that config. Forks keep the safe example defaults, while your
+own Cloudflare project can use its real allowlist.
+
 ## Local commands
 
 ```sh
@@ -143,6 +190,7 @@ pnpm dev
 pnpm dev:remote
 pnpm check
 pnpm security:check
+pnpm deploy:dry-run
 pnpm og doctor
 pnpm og url https://example.com/post
 pnpm og render https://example.com/post --out og.png

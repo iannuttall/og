@@ -3,6 +3,9 @@ dist/
 .wrangler/
 .dev.vars
 .dev.vars.*
+wrangler.deploy.jsonc
+wrangler.deploy.jsonc.tmp
+wrangler.local.jsonc
 .astro/
 .DS_Store
 coverage/

@@ -36,8 +36,8 @@
     }
   ],
   "vars": {
-    "ALLOWED_HOSTS": "ian.is,keep.md,ogtag.xyz,ilo.so",
-    "ALLOW_SUBDOMAINS": "true",
+    "ALLOWED_HOSTS": "example.com,www.example.com",
+    "ALLOW_SUBDOMAINS": "false",
     "ALLOWED_FORMATS": "png",
     "BROWSER_POOL_MAX": "2",
     "CACHE_TTL_SECONDS": "2592000",

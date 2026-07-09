@@ -7,6 +7,8 @@
       "!.wrangler",
       "!dist",
       "!coverage",
+      "!wrangler.deploy.jsonc",
+      "!wrangler.deploy.jsonc.tmp",
       "!src/worker-configuration.d.ts"
     ]
   },
