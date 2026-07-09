@@ -151,11 +151,16 @@ Create a local env file.
 cp .dev.vars.example .dev.vars
 ```
 
-Create an R2 bucket.
+Enable R2 in your Cloudflare account, then create the cache bucket.
 
 ```sh
 pnpm wrangler r2 bucket create og-cache
 ```
+
+R2 is required by this template. Workers Cache is still used first, but R2 gives
+the Worker a durable cache so repeat requests do not keep spending Browser Run
+time. A cache-only mode would be cheaper to set up, but less predictable under
+real traffic.
 
 Create a purge token.
 
