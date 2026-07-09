@@ -212,8 +212,13 @@ For local deploys, put the same public values in `.env.deploy.local`.
 
 `pnpm deploy` reads those values, writes an ignored deploy config, and deploys
 with the real account, domains, and allowlist for your Cloudflare project. It
-refuses to deploy from template defaults unless `OG_ALLOW_TEMPLATE_DEPLOY=true`
-is set explicitly.
+uses the current git SHA as the deploy id, skips when that SHA is already live,
+and refuses to deploy from template defaults unless
+`OG_ALLOW_TEMPLATE_DEPLOY=true` is set explicitly.
+
+For a Git-connected Cloudflare deploy, use `pnpm deploy` as the deploy command.
+Do not use raw `wrangler deploy`, because that bypasses the deploy marker and
+duplicate-deploy skip.
 
 ## Local commands
 

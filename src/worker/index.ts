@@ -34,6 +34,20 @@ app.post("/purge", (c) => handlePurge(c));
 app.post("/v1/purge", (c) => handlePurge(c));
 app.get("/health", (c) => c.json({ status: "ok" }));
 app.get("/v1/health", (c) => c.json({ status: "ok" }));
+app.get("/.well-known/deploy.json", (c) =>
+  c.json(
+    {
+      deployId: c.env.DEPLOY_ID ?? null,
+      gitSha: c.env.GIT_SHA ?? null,
+      source: c.env.DEPLOY_SOURCE ?? null,
+      deployedAt: c.env.DEPLOYED_AT ?? null,
+    },
+    200,
+    {
+      "cache-control": "no-store",
+    },
+  ),
+);
 app.get("/favicon.ico", () => new Response(null, { status: 204 }));
 
 app.notFound((c) => c.json({ error: "Not found" }, 404));

@@ -37,6 +37,10 @@ const config = JSON.parse(readFileSync(sourcePath, "utf8"));
 config.vars ??= {};
 
 const varOverrides = {
+  DEPLOYED_AT: "DEPLOYED_AT",
+  DEPLOY_ID: "DEPLOY_ID",
+  DEPLOY_SOURCE: "DEPLOY_SOURCE",
+  GIT_SHA: "GIT_SHA",
   OG_ALLOWED_HOSTS: "ALLOWED_HOSTS",
   OG_ALLOW_SUBDOMAINS: "ALLOW_SUBDOMAINS",
   OG_ALLOWED_FORMATS: "ALLOWED_FORMATS",
