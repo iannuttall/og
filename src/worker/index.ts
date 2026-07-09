@@ -9,6 +9,7 @@ import { assertConfigSafe, loadConfig, parseOptions } from "../lib/og/config";
 import { serveFallback } from "../lib/og/fallback";
 import { RenderGate, releaseRender, reserveRender } from "../lib/og/gate";
 import { preflight } from "../lib/og/preflight";
+import { REPOSITORY_URL, shouldRedirectRoot } from "../lib/og/routes";
 import { takeScreenshot } from "../lib/og/screenshot";
 import { validateTarget } from "../lib/og/target";
 import {
@@ -25,7 +26,7 @@ type AppContext = Context<HonoEnv>;
 const app = new Hono<HonoEnv>();
 const inflightScreenshots = new Map<string, Promise<ArrayBuffer>>();
 
-app.get("/", (c) => handleRender(c));
+app.get("/", (c) => handleRoot(c));
 app.get("/v1/og", (c) => handleRender(c));
 app.get("/preview", (c) => handleRender(c, { bypassCache: true }));
 app.get("/v1/preview", (c) => handleRender(c, { bypassCache: true }));
@@ -38,6 +39,13 @@ app.get("/favicon.ico", () => new Response(null, { status: 204 }));
 app.notFound((c) => c.json({ error: "Not found" }, 404));
 
 export default app;
+
+function handleRoot(c: AppContext): Response | Promise<Response> {
+  const requestUrl = new URL(c.req.url);
+  if (shouldRedirectRoot(requestUrl)) return c.redirect(REPOSITORY_URL, 302);
+
+  return handleRender(c);
+}
 
 async function handleRender(
   c: AppContext,

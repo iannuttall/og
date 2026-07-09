@@ -31,6 +31,20 @@ if (process.env.OG_WORKER_NAME) {
   config.name = process.env.OG_WORKER_NAME;
 }
 
+if (process.env.OG_ACCOUNT_ID) {
+  config.account_id = process.env.OG_ACCOUNT_ID;
+}
+
+if (process.env.OG_DOMAINS) {
+  config.routes = process.env.OG_DOMAINS.split(",")
+    .map((domain) => domain.trim())
+    .filter(Boolean)
+    .map((domain) => ({
+      pattern: domain,
+      custom_domain: true,
+    }));
+}
+
 if (process.env.OG_R2_BUCKET) {
   for (const bucket of config.r2_buckets ?? []) {
     if (bucket.binding === "OG_CACHE") {
@@ -47,8 +61,12 @@ const hosts = config.vars.ALLOWED_HOSTS;
 const bucket =
   config.r2_buckets?.find((item) => item.binding === "OG_CACHE")?.bucket_name ??
   "unknown";
+const domains = config.routes
+  ?.map((route) => (typeof route === "string" ? route : route.pattern))
+  .join(", ");
 
 console.log(`Generated ${outputPath}`);
 console.log(`Worker: ${config.name}`);
 console.log(`Allowed hosts: ${hosts}`);
 console.log(`R2 bucket: ${bucket}`);
+if (domains) console.log(`Domains: ${domains}`);
