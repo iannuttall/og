@@ -1,0 +1,7 @@
+allowBuilds:
+  '@biomejs/biome': true
+  '@cloudflare/puppeteer': true
+  esbuild: true
+  sharp: true
+  workerd: true
+

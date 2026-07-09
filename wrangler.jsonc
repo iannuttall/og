@@ -1,0 +1,52 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "og",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-07-09",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "cache": {
+    "enabled": true
+  },
+  "observability": {
+    "enabled": true
+  },
+  "browser": {
+    "binding": "BROWSER"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RENDER_GATE",
+        "class_name": "RenderGate"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["RenderGate"]
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "OG_CACHE",
+      "bucket_name": "og-cache"
+    }
+  ],
+  "vars": {
+    "ALLOWED_HOSTS": "ian.is,keep.md,ogtag.xyz,ilo.so",
+    "ALLOW_SUBDOMAINS": "true",
+    "ALLOWED_FORMATS": "png",
+    "BROWSER_POOL_MAX": "2",
+    "CACHE_TTL_SECONDS": "2592000",
+    "ENABLE_PREFLIGHT": "true",
+    "ENVIRONMENT": "production",
+    "MAX_HTML_BYTES": "5242880",
+    "MAX_NEW_URLS_PER_WINDOW": "500",
+    "MAX_RENDERS_PER_WINDOW": "1000",
+    "PER_URL_COOLDOWN_SECONDS": "3600",
+    "USAGE_WINDOW_SECONDS": "2592000"
+  }
+}

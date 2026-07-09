@@ -1,0 +1,35 @@
+{
+  "name": "@iannuttall/og",
+  "version": "0.1.0",
+  "description": "A Cloudflare Worker template for cached Open Graph image generation.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.0.0",
+  "scripts": {
+    "dev": "wrangler dev --local",
+    "dev:remote": "wrangler dev --remote",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "deploy": "wrangler deploy",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "og": "node scripts/og.mjs",
+    "security:audit": "pnpm audit --audit-level moderate",
+    "security:check": "pnpm run security:audit && pnpm run security:secrets",
+    "security:secrets": "node scripts/security-secrets.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "types": "wrangler types src/worker-configuration.d.ts"
+  },
+  "dependencies": {
+    "@cloudflare/puppeteer": "^1.0.5",
+    "hono": "^4.12.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@cloudflare/vitest-pool-workers": "^0.18.3",
+    "@types/node": "^26.1.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.109.0"
+  }
+}

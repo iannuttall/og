@@ -1,0 +1,16 @@
+ALLOWED_HOSTS="*"
+ALLOW_SUBDOMAINS="true"
+ALLOWED_FORMATS="png"
+BROWSER_POOL_MAX="2"
+CACHE_TTL_SECONDS="2592000"
+ENABLE_PREFLIGHT="false"
+ENVIRONMENT="development"
+MAX_HTML_BYTES="5242880"
+MAX_NEW_URLS_PER_WINDOW="500"
+MAX_RENDERS_PER_WINDOW="1000"
+PER_URL_COOLDOWN_SECONDS="3600"
+USAGE_WINDOW_SECONDS="2592000"
+# Optional: point at a local screenshot service instead of Browser Rendering.
+# DEV_SCREENSHOT_URL="http://127.0.0.1:8788"
+# Optional: enable authenticated POST /purge and GET /preview locally.
+# PURGE_TOKEN="change-me"
