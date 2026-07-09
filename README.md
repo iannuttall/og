@@ -198,6 +198,7 @@ public deploy variables in Cloudflare's build settings:
 OG_ALLOWED_HOSTS=example.com,www.example.com
 OG_ALLOW_SUBDOMAINS=false
 OG_DOMAINS=og.example.com
+OG_REPOSITORY_URL=https://github.com/your-name/og
 ```
 
 `pnpm deploy` reads those values, writes an ignored deploy config, and deploys

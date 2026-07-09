@@ -47,6 +47,7 @@
     "MAX_NEW_URLS_PER_WINDOW": "500",
     "MAX_RENDERS_PER_WINDOW": "1000",
     "PER_URL_COOLDOWN_SECONDS": "3600",
+    "REPOSITORY_URL": "https://github.com/your-name/og",
     "USAGE_WINDOW_SECONDS": "2592000"
   }
 }

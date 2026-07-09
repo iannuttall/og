@@ -9,7 +9,7 @@ import { assertConfigSafe, loadConfig, parseOptions } from "../lib/og/config";
 import { serveFallback } from "../lib/og/fallback";
 import { RenderGate, releaseRender, reserveRender } from "../lib/og/gate";
 import { preflight } from "../lib/og/preflight";
-import { REPOSITORY_URL, shouldRedirectRoot } from "../lib/og/routes";
+import { shouldRedirectRoot } from "../lib/og/routes";
 import { takeScreenshot } from "../lib/og/screenshot";
 import { validateTarget } from "../lib/og/target";
 import {
@@ -42,7 +42,9 @@ export default app;
 
 function handleRoot(c: AppContext): Response | Promise<Response> {
   const requestUrl = new URL(c.req.url);
-  if (shouldRedirectRoot(requestUrl)) return c.redirect(REPOSITORY_URL, 302);
+  if (shouldRedirectRoot(requestUrl)) {
+    return c.redirect(loadConfig(c.env).repositoryUrl, 302);
+  }
 
   return handleRender(c);
 }

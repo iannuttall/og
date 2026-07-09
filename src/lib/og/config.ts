@@ -22,6 +22,7 @@ export interface AppConfig {
   maxNewUrlsPerWindow: number;
   maxRendersPerWindow: number;
   perUrlCooldownSeconds: number;
+  repositoryUrl: string;
   usageWindowSeconds: number;
 }
 
@@ -58,6 +59,10 @@ export function loadConfig(env: Cloudflare.Env): AppConfig {
       min: 0,
       max: 60 * 60 * 24 * 30,
     }),
+    repositoryUrl: stringEnv(
+      env.REPOSITORY_URL,
+      "https://github.com/your-name/og",
+    ),
     usageWindowSeconds: intEnv(env.USAGE_WINDOW_SECONDS, 60 * 60 * 24 * 30, {
       min: 60,
       max: 60 * 60 * 24 * 365,
@@ -150,6 +155,11 @@ function intEnv(
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) return fallback;
   return Math.min(bounds.max, Math.max(bounds.min, Math.trunc(parsed)));
+}
+
+function stringEnv(value: string | undefined, fallback: string): string {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : fallback;
 }
 
 function normalizeEnvironment(

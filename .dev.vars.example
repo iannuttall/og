@@ -9,6 +9,7 @@ MAX_HTML_BYTES="5242880"
 MAX_NEW_URLS_PER_WINDOW="500"
 MAX_RENDERS_PER_WINDOW="1000"
 PER_URL_COOLDOWN_SECONDS="3600"
+REPOSITORY_URL="https://github.com/your-name/og"
 USAGE_WINDOW_SECONDS="2592000"
 # Optional: point at a local screenshot service instead of Browser Rendering.
 # DEV_SCREENSHOT_URL="http://127.0.0.1:8788"
