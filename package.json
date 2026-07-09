@@ -20,7 +20,8 @@
     "security:secrets": "node scripts/security-secrets.mjs",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "types": "wrangler types --strict-vars=false src/worker-configuration.d.ts"
+    "types": "wrangler types --env-file .dev.vars.example --strict-vars=false src/worker-configuration.d.ts",
+    "types:check": "wrangler types --env-file .dev.vars.example --strict-vars=false src/worker-configuration.d.ts --check"
   },
   "dependencies": {
     "@cloudflare/puppeteer": "^1.0.5",

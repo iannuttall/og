@@ -5,7 +5,7 @@ export const renderPhysicsExample = () =>
     "physics-spheres.png",
     htmlDocument({
       styles: `
-        body { background: #080719; color: #fff; }
+        body { background: #070618; color: #fff; }
         canvas {
           position: absolute;
           inset: 0;
@@ -16,9 +16,10 @@ export const renderPhysicsExample = () =>
           position: absolute;
           inset: 0;
           background:
-            radial-gradient(circle at 68% 32%, rgba(124, 58, 237, .32), transparent 32%),
-            radial-gradient(circle at 47% 62%, rgba(99, 102, 241, .24), transparent 34%),
-            linear-gradient(180deg, rgba(8, 7, 25, .1), rgba(8, 7, 25, .58));
+            radial-gradient(circle at 62% 19%, rgba(236, 72, 153, .22), transparent 22%),
+            radial-gradient(circle at 63% 40%, rgba(124, 58, 237, .32), transparent 33%),
+            radial-gradient(circle at 45% 52%, rgba(99, 102, 241, .2), transparent 30%),
+            linear-gradient(180deg, rgba(7, 6, 24, .04), rgba(7, 6, 24, .72));
         }
         .content {
           position: relative;
@@ -82,62 +83,96 @@ export const renderPhysicsExample = () =>
           (() => {
             const canvas = document.querySelector("canvas");
             const ctx = canvas.getContext("2d");
-            ctx.fillStyle = "#080719";
+            ctx.fillStyle = "#070618";
             ctx.fillRect(0, 0, 1200, 630);
-            const scene = ctx.createRadialGradient(690, 240, 80, 690, 240, 520);
-            scene.addColorStop(0, "rgba(127, 88, 255, .32)");
-            scene.addColorStop(1, "rgba(8, 7, 25, 0)");
+            const scene = ctx.createRadialGradient(650, 210, 90, 650, 230, 500);
+            scene.addColorStop(0, "rgba(167, 139, 250, .3)");
+            scene.addColorStop(0.55, "rgba(76, 29, 149, .18)");
+            scene.addColorStop(1, "rgba(7, 6, 24, 0)");
             ctx.fillStyle = scene;
             ctx.fillRect(0, 0, 1200, 630);
 
             const spheres = [
-              [515, 92, 74, "#080719"],
-              [596, 128, 66, "#7e22ce"],
-              [462, 220, 88, "#0b1028"],
-              [706, 204, 92, "#8b8de8"],
-              [592, 278, 84, "#4c1d95"],
-              [802, 178, 70, "#080719"],
-              [507, 346, 78, "#5b21b6"],
-              [646, 352, 84, "#8587dc"],
-              [746, 375, 66, "#250b35"],
-              [548, 198, 76, "#5b1d67"],
-              [430, 315, 74, "#7677d9"],
-              [682, 120, 45, "#8b5cf6"],
+              [528, 112, 74, "#060518", 0.94],
+              [624, 138, 70, "#8b35c9", 1.02],
+              [462, 236, 84, "#08071d", 0.96],
+              [530, 244, 86, "#6b2aa2", 0.9],
+              [700, 236, 92, "#797bdb", 0.88],
+              [802, 196, 72, "#060518", 1.06],
+              [596, 285, 88, "#6930ba", 1.1],
+              [666, 355, 84, "#8586da", 1.04],
+              [752, 382, 62, "#2d0b38", 0.92],
+              [514, 370, 76, "#4d299d", 0.98],
+              [426, 330, 70, "#7475d6", 0.84],
+              [680, 132, 48, "#9d4edd", 0.76],
+              [744, 266, 54, "#30306f", 0.78],
             ];
 
-            for (const [x, y, radius, color] of spheres) {
+            const drawSphere = (x, y, radius, color, scale) => {
+              const r = radius * scale;
               ctx.save();
-              ctx.shadowColor = "rgba(139, 92, 246, .42)";
-              ctx.shadowBlur = 24;
-              const shadow = ctx.createRadialGradient(
-                x - radius * 0.4,
-                y - radius * 0.5,
-                radius * 0.05,
-                x,
-                y,
-                radius,
+              ctx.shadowColor = "rgba(167, 139, 250, .38)";
+              ctx.shadowBlur = 28 * scale;
+              ctx.shadowOffsetY = 5 * scale;
+              const material = ctx.createRadialGradient(
+                x - r * 0.42,
+                y - r * 0.5,
+                r * 0.06,
+                x + r * 0.18,
+                y + r * 0.18,
+                r * 1.12,
               );
-              shadow.addColorStop(0, "rgba(255,255,255,.95)");
-              shadow.addColorStop(0.18, color);
-              shadow.addColorStop(1, "rgba(0,0,0,.42)");
+              material.addColorStop(0, "rgba(255,255,255,.96)");
+              material.addColorStop(0.13, color);
+              material.addColorStop(0.74, color);
+              material.addColorStop(1, "rgba(0,0,0,.72)");
               ctx.beginPath();
-              ctx.arc(x, y, radius, 0, Math.PI * 2);
-              ctx.fillStyle = shadow;
+              ctx.arc(x, y, r, 0, Math.PI * 2);
+              ctx.fillStyle = material;
               ctx.fill();
-              ctx.lineWidth = 3;
-              ctx.strokeStyle = "rgba(221, 214, 254, .55)";
-              ctx.stroke();
 
               ctx.shadowBlur = 0;
-              ctx.fillStyle = "rgba(255,255,255,.58)";
+              ctx.lineWidth = Math.max(2, 3.4 * scale);
+              ctx.strokeStyle = "rgba(238, 242, 255, .62)";
+              ctx.stroke();
+
+              ctx.clip();
+              const rim = ctx.createLinearGradient(x - r, y - r, x + r, y + r);
+              rim.addColorStop(0, "rgba(255,255,255,.56)");
+              rim.addColorStop(0.28, "rgba(255,255,255,0)");
+              rim.addColorStop(0.78, "rgba(0,0,0,0)");
+              rim.addColorStop(1, "rgba(255,255,255,.22)");
+              ctx.strokeStyle = rim;
+              ctx.lineWidth = 7 * scale;
               ctx.beginPath();
-              ctx.arc(x - radius * 0.32, y - radius * 0.28, radius * 0.15, 0, Math.PI * 2);
+              ctx.arc(x, y, r - 2, 0, Math.PI * 2);
+              ctx.stroke();
+
+              ctx.fillStyle = "rgba(255,255,255,.5)";
+              ctx.beginPath();
+              ctx.ellipse(x - r * 0.36, y - r * 0.26, r * 0.12, r * 0.08, .55, 0, Math.PI * 2);
               ctx.fill();
-              ctx.fillStyle = "rgba(167, 139, 250, .48)";
+              ctx.fillStyle = "rgba(196, 181, 253, .46)";
               ctx.beginPath();
-              ctx.arc(x + radius * 0.34, y - radius * 0.08, radius * 0.12, 0, Math.PI * 2);
+              ctx.ellipse(x - r * 0.18, y - r * 0.22, r * 0.09, r * 0.06, .55, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = "rgba(79, 70, 229, .38)";
+              ctx.beginPath();
+              ctx.ellipse(x + r * 0.38, y - r * 0.1, r * 0.12, r * 0.16, .15, 0, Math.PI * 2);
               ctx.fill();
               ctx.restore();
+            };
+
+            ctx.save();
+            ctx.filter = "blur(18px)";
+            ctx.fillStyle = "rgba(15, 12, 42, .72)";
+            ctx.beginPath();
+            ctx.ellipse(690, 364, 270, 64, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            for (const [x, y, ...sphere] of spheres) {
+              drawSphere(x + 70, y - 8, ...sphere);
             }
 
             ctx.fillStyle = "#ec4899";

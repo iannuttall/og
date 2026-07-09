@@ -60,9 +60,6 @@ Advanced demos:
   <img src="examples/images/physics-spheres.png" alt="Physics spheres OG image example" width="390">
 </p>
 
-For heavier scenes, keep the 3D dependencies in your site, not this Worker. The
-Worker only needs the final `<template>`.
-
 ```tsx
 <template data-og-template data-og-width="1200" data-og-height="630">
   <Canvas camera={{ position: [0, 0, 30], fov: 17.5 }}>

@@ -18,6 +18,5 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm security:audit
-      - run: pnpm types
-      - run: git diff --exit-code src/worker-configuration.d.ts
+      - run: pnpm types:check
       - run: pnpm check
