@@ -108,6 +108,10 @@ async function handleRender(
         }
       }
 
+      if (options.bypassCache) {
+        return takeScreenshot(c.env, mode, parsedOptions);
+      }
+
       const gate = await reserveRender({
         env: c.env,
         url: targetUrl,

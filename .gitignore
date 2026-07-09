@@ -3,6 +3,7 @@ dist/
 .wrangler/
 .dev.vars
 .dev.vars.*
+.env.deploy.local
 wrangler.deploy.jsonc
 wrangler.deploy.jsonc.tmp
 wrangler.local.jsonc

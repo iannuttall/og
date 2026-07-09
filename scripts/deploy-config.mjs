@@ -1,8 +1,37 @@
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname } from "node:path";
 
 const sourcePath = "wrangler.jsonc";
 const outputPath = "wrangler.deploy.jsonc";
+const localDeployEnvPath = ".env.deploy.local";
+
+function loadEnvFile(path) {
+  if (!existsSync(path)) return;
+
+  for (const line of readFileSync(path, "utf8").split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+
+    const separatorIndex = trimmed.indexOf("=");
+    if (separatorIndex === -1) continue;
+
+    const key = trimmed.slice(0, separatorIndex).trim();
+    const value = trimmed
+      .slice(separatorIndex + 1)
+      .trim()
+      .replace(/^['"]|['"]$/g, "");
+
+    process.env[key] ??= value;
+  }
+}
+
+loadEnvFile(localDeployEnvPath);
 
 const config = JSON.parse(readFileSync(sourcePath, "utf8"));
 config.vars ??= {};
@@ -32,8 +61,11 @@ if (process.env.OG_WORKER_NAME) {
   config.name = process.env.OG_WORKER_NAME;
 }
 
-if (process.env.OG_ACCOUNT_ID) {
-  config.account_id = process.env.OG_ACCOUNT_ID;
+const accountId =
+  process.env.OG_ACCOUNT_ID ?? process.env.CLOUDFLARE_ACCOUNT_ID;
+
+if (accountId) {
+  config.account_id = accountId;
 }
 
 if (process.env.OG_DOMAINS) {
@@ -52,6 +84,31 @@ if (process.env.OG_R2_BUCKET) {
       bucket.bucket_name = process.env.OG_R2_BUCKET;
     }
   }
+}
+
+const requiredDeployEnv = [
+  ["OG_ACCOUNT_ID", accountId],
+  ["OG_ALLOWED_HOSTS", process.env.OG_ALLOWED_HOSTS],
+  ["OG_DOMAINS", process.env.OG_DOMAINS],
+  ["OG_REPOSITORY_URL", process.env.OG_REPOSITORY_URL],
+];
+
+const missingDeployEnv = requiredDeployEnv
+  .filter(([, value]) => !value)
+  .map(([name]) => name);
+
+if (
+  missingDeployEnv.length > 0 &&
+  process.env.OG_ALLOW_TEMPLATE_DEPLOY !== "true"
+) {
+  throw new Error(
+    [
+      "Refusing to generate a deploy config from template defaults.",
+      `Set ${missingDeployEnv.join(", ")} in Cloudflare build settings,`,
+      `${localDeployEnvPath}, or the command environment.`,
+      "Use OG_ALLOW_TEMPLATE_DEPLOY=true only for template smoke tests.",
+    ].join(" "),
+  );
 }
 
 mkdirSync(dirname(outputPath), { recursive: true });

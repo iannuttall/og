@@ -149,6 +149,7 @@ Create a local env file.
 
 ```sh
 cp .dev.vars.example .dev.vars
+cp .env.deploy.example .env.deploy.local
 ```
 
 Enable R2 in your Cloudflare account, then create the cache bucket.
@@ -200,14 +201,19 @@ For a Git-connected Cloudflare deploy, keep `wrangler.jsonc` generic and set
 public deploy variables in Cloudflare's build settings:
 
 ```sh
+OG_ACCOUNT_ID=your-cloudflare-account-id
 OG_ALLOWED_HOSTS=example.com,www.example.com
 OG_ALLOW_SUBDOMAINS=false
 OG_DOMAINS=og.example.com
 OG_REPOSITORY_URL=https://github.com/your-name/og
 ```
 
+For local deploys, put the same public values in `.env.deploy.local`.
+
 `pnpm deploy` reads those values, writes an ignored deploy config, and deploys
-with the real allowlist for your Cloudflare project.
+with the real account, domains, and allowlist for your Cloudflare project. It
+refuses to deploy from template defaults unless `OG_ALLOW_TEMPLATE_DEPLOY=true`
+is set explicitly.
 
 ## Local commands
 
