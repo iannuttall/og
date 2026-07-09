@@ -25,11 +25,9 @@ This Worker takes a URL, opens that page with Cloudflare Browser Rendering, find
 https://og.example.com/?url=https://example.com/post
 ```
 
-## Why it exists
+## When to use it
 
-Most OG image generators are either another service to pay for or a chunk of server code inside the main app. This keeps the job separate.
-
-Your site owns the template. The Worker owns rendering, caching, and guardrails.
+Use this when you want your own site to define the OG design, with Cloudflare handling screenshots, caching, and render limits.
 
 ## Examples
 
@@ -79,15 +77,14 @@ Advanced demos:
 
 ## Safety model
 
-Browser Rendering can cost money if public visitors can force fresh renders. This template is built around that problem.
+Browser Rendering can cost money if public visitors can force fresh renders. The defaults are designed to keep that under control.
 
 - Only allowlisted hosts can be rendered.
 - `ALLOWED_HOSTS="*"` is rejected outside development.
 - Public `?v=` cache busting is ignored.
 - Image formats are allowlisted. PNG is the default.
 - Cache hits are served from Workers Cache first, then R2.
-- Browser renders pass through a Durable Object gate.
-- The gate enforces concurrency, per-URL cooldowns, render budgets, and new URL limits.
+- Fresh renders are limited by concurrency, per-URL cooldowns, render budgets, and new URL limits.
 - `/preview` and `/purge` require `PURGE_TOKEN`.
 
 The defaults are conservative. Raise them after you know your traffic.
@@ -176,9 +173,8 @@ OG_ALLOWED_HOSTS=example.com,www.example.com
 OG_ALLOW_SUBDOMAINS=false
 ```
 
-`pnpm deploy` generates an ignored `wrangler.deploy.jsonc` from those values
-and deploys with that config. Forks keep the safe example defaults, while your
-own Cloudflare project can use its real allowlist.
+`pnpm deploy` reads those values, writes an ignored deploy config, and deploys
+with the real allowlist for your Cloudflare project.
 
 ## Local commands
 
@@ -229,18 +225,18 @@ curl -X POST https://og.example.com/purge \
   -d '{"urls":["https://example.com/a","https://example.com/b"]}'
 ```
 
-Purging bumps an owner-only cache version for that source URL. Public visitors cannot force that.
+Purging is owner-controlled. Public visitors cannot force a fresh render with query strings.
 
-## How caching works
+## Cache behavior
 
 The cache key is based on:
 
 - target URL
 - image format
 - image quality for non-PNG formats
-- owner-controlled purge version
+- purge version
 
-The Worker checks Workers Cache first. If that misses, it checks R2. Browser Rendering only runs when both caches miss and the render gate allows it.
+The Worker checks Workers Cache first, then R2. Browser Rendering runs only after both caches miss and the render limits allow it.
 
 ## Security notes
 
