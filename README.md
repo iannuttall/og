@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  A small Cloudflare Worker for rendering cached Open Graph images from your own site.
+  A self-hosted Cloudflare Worker for rendering cached Open Graph images from your own site.
 </p>
 
 <p align="center">
@@ -25,13 +25,25 @@ This Worker takes a URL, opens that page with Cloudflare Browser Rendering, find
 https://og.example.com/?url=https://example.com/post
 ```
 
-It is intentionally not a SaaS app. There is no dashboard, auth system, billing, or database.
-
 ## Why it exists
 
 Most OG image generators are either another service to pay for or a chunk of server code inside the main app. This keeps the job separate.
 
 Your site owns the template. The Worker owns rendering, caching, and guardrails.
+
+## Examples
+
+The screenshots below are generated from ordinary HTML templates. Regenerate them with:
+
+```sh
+pnpm examples
+```
+
+<p>
+  <img src="examples/images/minimal.png" alt="Minimal OG image example" width="390">
+  <img src="examples/images/dark.png" alt="Dark OG image example" width="390">
+  <img src="examples/images/editorial.png" alt="Editorial OG image example" width="390">
+</p>
 
 ## Safety model
 

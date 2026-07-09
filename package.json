@@ -10,6 +10,7 @@
     "dev:remote": "wrangler dev --remote",
     "check": "pnpm lint && pnpm typecheck && pnpm test",
     "deploy": "wrangler deploy",
+    "examples": "node examples/generate.mjs",
     "format": "biome format --write .",
     "lint": "biome check .",
     "og": "node scripts/og.mjs",
