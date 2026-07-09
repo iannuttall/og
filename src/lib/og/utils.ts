@@ -64,7 +64,7 @@ export function extractUrlParam(url: URL): string | null {
  * replace the page body with it.
  */
 export const OG_TEMPLATE_EXTRACT_SCRIPT = `
-(() => {
+(async () => {
   const tpl = document.querySelector('template[data-og-template]');
   if (!tpl) return null;
 
@@ -81,6 +81,20 @@ export const OG_TEMPLATE_EXTRACT_SCRIPT = `
 
   const content = tpl.content.cloneNode(true);
   document.body.appendChild(content);
+
+  if (document.fonts && document.fonts.ready) {
+    await document.fonts.ready;
+  }
+
+  const images = Array.from(document.images);
+  await Promise.all(images.map((image) => {
+    if (image.complete && image.naturalWidth > 0) return Promise.resolve();
+    if (image.decode) return image.decode().catch(() => {});
+    return new Promise((resolve) => {
+      image.addEventListener('load', resolve, { once: true });
+      image.addEventListener('error', resolve, { once: true });
+    });
+  }));
 
   window.scrollTo(0, 0);
 
