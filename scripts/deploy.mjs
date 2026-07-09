@@ -10,11 +10,13 @@ const root = process.cwd();
 loadEnvFile(".env.deploy.local");
 
 const deployId = git(["rev-parse", "HEAD"]);
-const source = process.env.GITHUB_ACTIONS
-  ? "github"
-  : process.env.CF_PAGES || process.env.CLOUDFLARE_BUILD_ID
-    ? "cloudflare"
-    : "local";
+const source =
+  process.env.DEPLOY_SOURCE ??
+  (process.env.GITHUB_ACTIONS
+    ? "github"
+    : process.env.CF_PAGES || process.env.CLOUDFLARE_BUILD_ID
+      ? "cloudflare"
+      : "local");
 const statusUrl =
   process.env.OG_DEPLOY_STATUS_URL ??
   deployStatusUrlFromDomains(process.env.OG_DOMAINS);
