@@ -89,6 +89,32 @@ Browser Rendering can cost money if public visitors can force fresh renders. The
 
 The defaults are conservative. Raise them after you know your traffic.
 
+## Cost estimate
+
+Cloudflare charges Browser Run by browser time, not by image count. Cached hits
+from Workers Cache or R2 do not need a fresh browser render.
+
+Current Browser Run allowances:
+
+| Workers plan | Included browser time | What happens after that |
+| --- | ---: | --- |
+| Free | 10 minutes per day, about 5 hours per 30-day month | Requests fail with a 429 until the daily limit resets |
+| Paid | 10 hours per month | $0.09 per additional browser hour |
+
+Rough uncached image capacity:
+
+| Average render time | Free plan, about 5 hours/month | Paid plan, 10 included hours/month | Paid overage cost per uncached image |
+| --- | ---: | ---: | ---: |
+| 1 second | ~18,000 images | ~36,000 images | ~$0.000025 |
+| 3 seconds | ~6,000 images | ~12,000 images | ~$0.000075 |
+| 5 seconds | ~3,600 images | ~7,200 images | ~$0.000125 |
+
+These are estimates. Real usage depends on template weight, page load time,
+cache hit rate, and any other Browser Run jobs in the same Cloudflare account.
+
+Source: [Cloudflare Browser Run pricing](https://developers.cloudflare.com/browser-run/pricing/)
+and [Browser Run limits](https://developers.cloudflare.com/browser-run/limits/).
+
 ## Template contract
 
 Add a template to any page you want rendered.
