@@ -2,6 +2,12 @@ import { describe, expect, it } from "vitest";
 import { assertConfigSafe, loadConfig, parseOptions } from "./config";
 
 describe("config", () => {
+  it("redirects to the canonical repository by default", () => {
+    const config = loadConfig({} as Cloudflare.Env);
+
+    expect(config.repositoryUrl).toBe("https://github.com/iannuttall/og");
+  });
+
   it("rejects wildcard hosts outside development", () => {
     const config = loadConfig({
       ALLOWED_HOSTS: "*",

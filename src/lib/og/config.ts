@@ -61,7 +61,7 @@ export function loadConfig(env: Cloudflare.Env): AppConfig {
     }),
     repositoryUrl: stringEnv(
       env.REPOSITORY_URL,
-      "https://github.com/your-name/og",
+      "https://github.com/iannuttall/og",
     ),
     usageWindowSeconds: intEnv(env.USAGE_WINDOW_SECONDS, 60 * 60 * 24 * 30, {
       min: 60,
