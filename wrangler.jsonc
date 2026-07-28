@@ -36,7 +36,7 @@
     }
   ],
   "vars": {
-    "ALLOWED_HOSTS": "example.com,www.example.com",
+    "ALLOWED_HOSTS": "ian.is,seoskill.dev,swipe.md",
     "ALLOW_SUBDOMAINS": "false",
     "ALLOWED_FORMATS": "png",
     "BROWSER_POOL_MAX": "2",
