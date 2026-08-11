@@ -48,7 +48,8 @@ export function extractUrlParam(url: URL): string | null {
         segments.push(part.slice(4));
       }
     } else {
-      const key = part.split("=")[0];
+      const rawKey = part.split("=")[0];
+      const key = rawKey.startsWith("amp;") ? rawKey.slice(4) : rawKey;
       if (WORKER_PARAMS.has(key)) break;
       segments.push(part);
     }

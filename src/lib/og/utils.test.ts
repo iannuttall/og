@@ -15,6 +15,14 @@ describe("utils", () => {
     expect(extractUrlParam(url)).toBe("https://example.com/post?a=1&b=2");
   });
 
+  it("accepts worker params copied from HTML source", () => {
+    const url = new URL(
+      "https://og.test/?url=https%3A%2F%2Fkeep.md%2F&amp;v=3",
+    );
+
+    expect(extractUrlParam(url)).toBe("https://keep.md/");
+  });
+
   it("ignores public v params for cache identity", async () => {
     const mode = { mode: "url" as const, url: "https://example.com/post" };
 
