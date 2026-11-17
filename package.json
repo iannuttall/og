@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@cloudflare/puppeteer": "^1.4.0",
-    "hono": "^4.13.14"
+    "hono": "^4.13.16"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.4",
