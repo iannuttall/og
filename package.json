@@ -25,16 +25,16 @@
   },
   "dependencies": {
     "@cloudflare/puppeteer": "^1.4.0",
-    "hono": "^4.13.18"
+    "hono": "^4.13.19"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.6.7",
+    "@biomejs/biome": "^2.6.8",
     "@cloudflare/vitest-pool-workers": "^0.23.0",
     "@types/node": "^26.6.6",
     "typescript": "^6.0.3",
     "vite": "^7.3.8",
     "vitest": "^4.1.12",
-    "wrangler": "^4.161.0"
+    "wrangler": "^4.165.0"
   },
   "pnpm": {
     "overrides": {
